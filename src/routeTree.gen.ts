@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExplorarRouteImport } from './routes/explorar'
 import { Route as GuardadosRouteImport } from './routes/guardados'
+import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as ViajesRouteImport } from './routes/viajes'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +30,53 @@ const GuardadosRoute = GuardadosRouteImport.update({
   path: '/guardados',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PerfilRoute = PerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ViajesRoute = ViajesRouteImport.update({
+  id: '/viajes',
+  path: '/viajes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/explorar': typeof ExplorarRoute
   '/guardados': typeof GuardadosRoute
+  '/perfil': typeof PerfilRoute
+  '/viajes': typeof ViajesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/explorar': typeof ExplorarRoute
   '/guardados': typeof GuardadosRoute
+  '/perfil': typeof PerfilRoute
+  '/viajes': typeof ViajesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/explorar': typeof ExplorarRoute
   '/guardados': typeof GuardadosRoute
+  '/perfil': typeof PerfilRoute
+  '/viajes': typeof ViajesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/explorar' | '/guardados'
+  fullPaths: '/' | '/explorar' | '/guardados' | '/perfil' | '/viajes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/explorar' | '/guardados'
-  id: '__root__' | '/' | '/explorar' | '/guardados'
+  to: '/' | '/explorar' | '/guardados' | '/perfil' | '/viajes'
+  id: '__root__' | '/' | '/explorar' | '/guardados' | '/perfil' | '/viajes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ExplorarRoute: typeof ExplorarRoute
   GuardadosRoute: typeof GuardadosRoute
+  PerfilRoute: typeof PerfilRoute
+  ViajesRoute: typeof ViajesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +102,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuardadosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/perfil': {
+      id: '/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/viajes': {
+      id: '/viajes'
+      path: '/viajes'
+      fullPath: '/viajes'
+      preLoaderRoute: typeof ViajesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +123,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ExplorarRoute: ExplorarRoute,
   GuardadosRoute: GuardadosRoute,
+  PerfilRoute: PerfilRoute,
+  ViajesRoute: ViajesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
