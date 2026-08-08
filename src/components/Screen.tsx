@@ -58,6 +58,8 @@ export function Row({
   );
 }
 
-export function Panel({ children }: { children: ReactNode }) {
-  return <div className="panel-surface divide-y divide-border overflow-hidden">{children}</div>;
+export function Panel({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return (
+    <div className={`panel-surface divide-y divide-border overflow-hidden ${className}`}>{children}</div>
+  );
 }
