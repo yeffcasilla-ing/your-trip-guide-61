@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { Panel, Row, Screen, SectionLabel } from "@/components/Screen";
 import { VEHICLES } from "@/lib/mock-data";
@@ -72,6 +72,15 @@ function ProfileScreen() {
           </button>
         ))}
       </div>
+
+      <Link
+        to="/ajustes"
+        className="press mt-4 flex items-center gap-3 rounded-2xl border border-primary/40 bg-primary/10 px-4 py-3 text-sm font-semibold"
+      >
+        <span aria-hidden>⚙️</span>
+        <span className="flex-1">Ajustes completos</span>
+        <span aria-hidden>›</span>
+      </Link>
 
       <SectionLabel>Navegación</SectionLabel>
       <Panel>

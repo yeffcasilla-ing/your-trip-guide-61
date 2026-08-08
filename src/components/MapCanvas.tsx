@@ -1,12 +1,25 @@
 /**
- * Lienzo de mapa provisional (Fase 2).
- * Es una representación esquemática, NO un mapa real ni datos geográficos.
- * En la fase de mapas se sustituye por el MapProvider conectado al proveedor.
+ * Lienzo de mapa provisional (Fase 2) con animaciones.
+ * Representación esquemática, NO un mapa real ni datos geográficos.
  */
-export function MapCanvas({ showRoute = true }: { showRoute?: boolean }) {
+const ROUTE_D = "M195 560 L188 400 L300 380 L292 210 L210 190";
+
+export function MapCanvas({
+  showRoute = true,
+  animated = true,
+  driving = false,
+}: {
+  showRoute?: boolean;
+  animated?: boolean;
+  driving?: boolean;
+}) {
   return (
     <div className="absolute inset-0 overflow-hidden bg-map-land" aria-hidden>
-      <svg className="size-full" viewBox="0 0 390 700" preserveAspectRatio="xMidYMid slice">
+      <svg
+        className={`size-full transition-transform duration-[1200ms] ease-out ${driving ? "scale-110" : "scale-100"}`}
+        viewBox="0 0 390 700"
+        preserveAspectRatio="xMidYMid slice"
+      >
         <path d="M-20 470 C 90 430, 150 520, 410 470 L410 720 L-20 720Z" fill="var(--color-map-water)" />
         {[...Array(9)].map((_, i) => (
           <line
@@ -36,16 +49,26 @@ export function MapCanvas({ showRoute = true }: { showRoute?: boolean }) {
           strokeWidth={18}
           fill="none"
         />
+
         {showRoute && (
           <>
             <path
-              d="M195 560 L188 400 L300 380 L292 210 L210 190"
+              d={ROUTE_D}
+              stroke="var(--color-route)"
+              strokeWidth={13}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+              opacity={0.25}
+            />
+            <path
+              d={ROUTE_D}
+              className={animated ? "route-flow" : undefined}
               stroke="var(--color-route)"
               strokeWidth={11}
               strokeLinecap="round"
               strokeLinejoin="round"
               fill="none"
-              opacity={0.95}
             />
             <path
               d="M292 210 L210 190"
@@ -54,12 +77,39 @@ export function MapCanvas({ showRoute = true }: { showRoute?: boolean }) {
               strokeLinecap="round"
               fill="none"
             />
-            <circle cx="210" cy="190" r="8" fill="var(--color-route)" />
+            <g>
+              <circle r="14" fill="var(--color-route)" opacity={0.2} className={animated ? "gps-pulse" : undefined} />
+              <circle cx="210" cy="190" r="8" fill="var(--color-route)" />
+              <circle cx="210" cy="190" r="8" fill="none" stroke="var(--color-surface)" strokeWidth={3} />
+            </g>
+
+            {animated && (
+              <g>
+                <circle r="5" fill="var(--color-traffic-free)" opacity={0.9}>
+                  <animateMotion dur="7s" repeatCount="indefinite" path={ROUTE_D} />
+                </circle>
+                <circle r="5" fill="var(--color-traffic-free)" opacity={0.45}>
+                  <animateMotion dur="7s" begin="2.3s" repeatCount="indefinite" path={ROUTE_D} />
+                </circle>
+              </g>
+            )}
           </>
         )}
-        <circle cx="195" cy="560" r="26" fill="var(--color-primary)" opacity={0.15} />
-        <circle cx="195" cy="560" r="10" fill="var(--color-primary)" />
-        <circle cx="195" cy="560" r="10" fill="none" stroke="var(--color-surface)" strokeWidth={3} />
+
+        {/* Posición del usuario */}
+        <g>
+          <circle
+            cx="195"
+            cy="560"
+            r="14"
+            fill="var(--color-primary)"
+            opacity={0.35}
+            className={animated ? "gps-pulse" : undefined}
+          />
+          <circle cx="195" cy="560" r="26" fill="var(--color-primary)" opacity={0.12} />
+          <circle cx="195" cy="560" r="10" fill="var(--color-primary)" />
+          <circle cx="195" cy="560" r="10" fill="none" stroke="var(--color-surface)" strokeWidth={3} />
+        </g>
       </svg>
     </div>
   );
