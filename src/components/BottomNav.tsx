@@ -22,9 +22,12 @@ export function BottomNav() {
             <Link
               to={to}
               activeOptions={{ exact: to === "/" }}
-              className="group flex flex-col items-center gap-1 rounded-xl px-2 py-1.5 text-muted-foreground transition-colors data-[status=active]:text-primary"
+              className="press group flex flex-col items-center gap-1 rounded-xl px-2 py-1.5 text-muted-foreground transition-colors data-[status=active]:text-primary"
             >
-              <Icon className="size-5" strokeWidth={1.9} />
+              <Icon
+                className="size-5 transition-transform duration-300 group-data-[status=active]:-translate-y-0.5 group-data-[status=active]:scale-110"
+                strokeWidth={1.9}
+              />
               <span className="text-[11px] font-medium leading-none">{label}</span>
             </Link>
           </li>
